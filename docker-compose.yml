@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+  
+  app:
+    build: .
+    container_name: nodejs_app
+    ports:
+      - "3001:3001"
+    environment:
+      - API_PORT=3001
+      - NODE_ENV=production
+      - MONGO_URI=mongodb+srv://sakarin14184:385739@cluster0.vu9kpok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - TOKEN_KEY=123456
+    volumes:
+      - .:/app
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data: {}
